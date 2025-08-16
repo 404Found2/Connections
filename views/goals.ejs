@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connections</title>
+
+
+    <script src="https://kit.fontawesome.com/8dc5063b50.js" crossorigin="anonymous"></script>
+
+
+    <style>
+        :root {
+            --blue: #0077b5;
+            --light-blue: #00a0dc;
+            --grey: #595959;
+            --light-grey: #eeeeeeff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            overflow-x: hidden;
+            margin: 0px;
+            padding: 0px;
+            display: grid;
+            grid-template-areas: "nav main";
+            grid-template-columns: 250px 3fr;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        a {
+            color: var(--grey);
+            text-decoration: none;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        #nav {
+            grid-area: nav;
+            color: var(--grey);
+            font-size: 22px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--light-grey);
+            display: flex;
+            flex-direction: column;
+            padding-left: 5px;
+            padding-top: 25px;
+        }
+
+        #nav a:last-of-type {
+            justify-self: flex-end;
+        }
+
+        a:hover,
+        button:hover {
+            color: white;
+            background: var(--light-blue);
+        }
+
+        button,
+        .goal a {
+            background: var(--blue);
+            color: white;
+            text-decoration: none;
+            margin: 0px;
+            padding: 8px;
+            border-radius: 10px;
+            border: 0px;
+            text-decoration: none;
+        }
+
+        #body {
+            grid-area: main;
+            margin: auto;
+        }
+
+        #flexbox {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            padding: 15px;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .goal {
+            background: var(--light-grey);
+            padding: 20px;
+            border-radius: 20px;
+            width: 200px;
+            height: 150px;
+
+        }
+
+        .goal h1 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0px;
+            padding: 0px;
+            height: 35px;
+        }
+
+        .goal p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-height: 16px;
+            height: 48px;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        #new {
+            float: right;
+            margin-right: 30px;
+            margin-bottom: 15px;
+        }
+
+        #title {
+            text-align: center;
+            color: var(--light-blue)
+        }
+
+        form {
+            border: 2px solid var(--blue);
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            width: 50vw;
+            margin: auto;
+        }
+
+        form h2 {
+            font-size: 20px;
+            margin: 0px;
+            color: var(--blue);
+            margin-bottom: 2px;
+        }
+
+        form button {
+            padding: 5px;
+            background: var(--light-blue);
+            border-radius: 5px;
+            border: 0px;
+            margin: 5px;
+            color: white;
+        }
+
+        form textarea {
+            width: 99%;
+        }
+
+        #hidden-Form {
+            display: none;
+        }
+    </style>
+
+    <script>
+        function updateForm(str) {
+            document.getElementById("hiddenName").value = str;
+            document.getElementById("hide-submit").click();
+        }
+    </script>
+</head>
+
+<body>
+    <div id="nav">
+        <a href="/home">Home</a>
+        <a href="/calendar">Calendar</a>
+        <a href="/goals" class="selected">My Goals</a>
+        <a href="/interview">Practice</a>
+        <a href="/">Logout</a>
+    </div>
+    <div id="body">
+        <h1 id="title">My Goals</h1>
+        <div id="flexbox">
+            <%- code -%>
+        </div>
+        <form method="POST" id="hidden-Form" action="/viewGoals">
+            <input name="hiddenName" id="hiddenName">
+            <button type="submit" form="hidden-Form" id="hide-submit"></button>
+        </form>
+
+        <form id="newGoals" method="POST" action="/newGoal">
+            <h2> Add New Goal</h2>
+            <label for="name">Enter Goal Name: </label><input id="name" name="name"> <br>
+            <label for="summary">Enter Description: </label> <br><textarea id="summary" name="summary"></textarea>
+            <br> <label for="date">Enter End Date: </label><input id="date" type="date" name="date"> <br>
+            <button>Add New Goal</button>
+        </form>
+    </div>
+
+</body>
+
+</html>
