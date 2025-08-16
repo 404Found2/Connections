@@ -1,0 +1,376 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connections</title>
+
+    <style>
+        :root {
+            --blue: #0077b5;
+            --light-blue: #00a0dc;
+            --grey: #595959;
+            --light-grey: #eeeeeeff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+            display: grid;
+            grid-template-areas: "nav main";
+            grid-template-columns: 250px 3fr;
+            width: 100vw;
+            height: 100vh;
+            overflow-x: hidden;
+        }
+
+        a {
+            color: var(--grey);
+            text-decoration: none;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        #nav {
+            grid-area: nav;
+            color: var(--grey);
+            font-size: 22px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--light-grey);
+            display: flex;
+            flex-direction: column;
+            padding-left: 5px;
+            padding-top: 25px;
+        }
+
+        #nav a:last-of-type {
+            justify-self: flex-end;
+        }
+
+        a:hover {
+            color: white;
+            background: var(--light-blue);
+        }
+
+        td {
+            width: 75px;
+            height: 75px;
+            background: var(--light-grey);
+            border: 1px solid var(--grey);
+        }
+
+        td div {
+            display: grid;
+            grid-template-areas: "date" "events";
+            grid-template-rows: 20px 1fr;
+            width: 100%;
+            height: 100%;
+        }
+
+        td div .date {
+            box-sizing: border-box;
+            grid-area: date;
+            text-align: right;
+            padding-right: 5px;
+        }
+
+        td div .events {
+            grid-area: events;
+            box-sizing: border-box;
+        }
+
+        .daysLabels th {
+            width: 75px;
+            height: 30px;
+            background: #00a0dc44;
+            font-size: 15px;
+        }
+
+        .controls {
+            background: var(--blue);
+            color: white;
+            padding: 10px;
+            height: 50px;
+            font-size: 30px;
+        }
+
+        #body {
+            grid-area: main;
+            margin: auto;
+        }
+
+        table {
+            gap: 0px;
+            padding: 0px;
+            border-spacing: 0px;
+        }
+
+        form {
+            border: 2px solid var(--blue);
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+            ;
+        }
+
+        form h2 {
+            font-size: 20px;
+            margin: 0px;
+
+        }
+
+        .completed {
+            padding: 1px;
+            background: #74B72E;
+            color: white;
+            box-sizing: border-box;
+            max-width: 75px;
+        }
+
+        .late {
+            background: #b22222 !important;
+            color: white;
+        }
+
+        button {
+            padding: 5px;
+            background: var(--light-blue);
+            border-radius: 5px;
+            border: 0px;
+            margin: 5px;
+            color: white;
+        }
+
+        .input2 {
+            max-width: 75px;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+    </style>
+
+    <script src="https://kit.fontawesome.com/8dc5063b50.js" crossorigin="anonymous"></script>
+
+    <script>
+
+        var events;
+        const monthNames = ["January", "February", "March", "April", "May", "June",
+            "July", "August", "September", "October", "November", "December"
+        ];
+
+        const monthDay = [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31];
+
+        var today = new Date();
+        var viewMonth = today.getMonth();
+        var viewYear = today.getFullYear();
+
+        function updateDate() {
+            events = '<%- Data %>';
+            events = JSON.parse(events);
+
+            for (var i = 1; i <= 42; i++) {
+                document.getElementById(i).innerHTML = `<div>
+                        <div id="${i}-date" class="date"></div>
+                        <div id="${i}-events" class="events"></div>
+                    </div>`
+            }
+
+            var offSet = new Date(viewYear, viewMonth, 1).getDay() + 1;
+
+            var daysInMonth = monthDay[viewMonth];
+
+            document.getElementById("month").innerHTML = monthNames[viewMonth] + " " + viewYear;
+
+            var count = 1;
+            var i = 0;
+            for (var i = offSet; i < (daysInMonth + offSet); i++) {
+
+                var daysTasks = [];
+
+                for (var j = 0; j < events.length; j++) {
+                    var tempDate = new Date(events[j][1]);
+                    var tempComp = new Date(viewYear, viewMonth, count - 1)
+                    if (tempDate.toDateString() === tempComp.toDateString()) {
+                        daysTasks.push([events[j][0], events[j][3], events[j][1]]);
+
+                    }
+                }
+
+                var string = "";
+
+                for (var k = 0; k < daysTasks.length; k++) {
+                    var today = new Date();
+                    var tempDate = new Date(daysTasks[k][2]);
+                    if (daysTasks[k][1]) {
+                        string += `<div class='input2 completed' onclick='updateForm("${daysTasks[k][0]}")'>${daysTasks[k][0]}</div><br>`
+                    } else {
+                        console.log(tempDate);
+                        console.log(today);
+                        if (tempDate < today) {
+                            string += `<div class='input2 late' onclick='updateForm("${daysTasks[k][0]}")'>${daysTasks[k][0]}</div><br>`
+                        } else {
+                            string += `<div class='input2' onclick='updateForm("${daysTasks[k][0]}")'>${daysTasks[k][0]}</div><br>`;
+                        }
+                    }
+
+                }
+
+                document.getElementById(i).innerHTML = `<div>
+                        <div id="${i}-date" class="date">${count}</div>
+                        <div id="${i}-events" class="events">${string}</div>
+                    </div >`;
+
+
+                count++;
+            }
+
+        }
+
+
+        function forward() {
+            viewMonth++;
+            if (viewMonth > 11) {
+                viewMonth = 0;
+                viewYear++;
+            }
+            updateDate();
+        };
+
+        function backward() {
+            viewMonth--;
+            if (viewMonth < 0) {
+                viewMonth = 11;
+                viewYear--;
+            }
+
+            updateDate();
+        }
+
+
+        function updateForm(str) {
+            document.getElementById("TaskName").value = str;
+            document.getElementById("TaskName2").value = str;
+
+            for (var i = 0; i < events.length; i++) {
+                if (events[i][0] == str) {
+                    document.getElementById("goalName").value = events[i][2];
+                    document.getElementById("goalName2").value = events[i][2];
+                }
+            }
+        }
+
+    </script>
+</head>
+
+<body onload="updateDate()">
+    <div id="nav">
+        <a href="/home">Home</a>
+        <a href="/calendar" class="selected">Calendar</a>
+        <a href="/goals">My Goals</a>
+        <a href="/interview">Practice</a>
+        <a href="/">Logout</a>
+    </div>
+    <div id="body">
+        <table id="month-based">
+            <thead>
+                <tr class="controls">
+                    <th><i onclick="backward();" class="fa fa-arrow-left" aria-hidden="true" id="backArrow"></i></th>
+                    <th id="month" colspan="5">[Month]</th>
+                    <th><i onclick="forward();" class="fa fa-arrow-right" aria-hidden="true" id="frontArrow"></i></th>
+                </tr>
+                <tr class="daysLabels">
+                    <th>Sun.</th>
+                    <th>Mon.</th>
+                    <th>Tues.</th>
+                    <th>Wed.</th>
+                    <th>Thurs.</th>
+                    <th>Fri.</th>
+                    <th>Sat.</th>
+                </tr>
+            </thead>
+            <tr>
+                <td id="1">
+                </td>
+                <td id="2">
+                </td>
+                <td id="3">
+                </td>
+                <td id="4">
+                </td>
+                <td id="5">
+                </td>
+                <td id="6">
+                </td>
+                <td id="7">
+                </td>
+            </tr>
+            <tr>
+                <td id="8"></td>
+                <td id="9"></td>
+                <td id="10"></td>
+                <td id="11"></td>
+                <td id="12"></td>
+                <td id="13"></td>
+                <td id="14"></td>
+            </tr>
+            <tr>
+                <td id="15"></td>
+                <td id="16"></td>
+                <td id="17"></td>
+                <td id="18"></td>
+                <td id="19"></td>
+                <td id="20"></td>
+                <td id="21"></td>
+            </tr>
+            <tr>
+                <td id="22"></td>
+                <td id="23"></td>
+                <td id="24"></td>
+                <td id="25"></td>
+                <td id="26"></td>
+                <td id="27"></td>
+                <td id="28"></td>
+            </tr>
+            <tr>
+                <td id="29"></td>
+                <td id="30"></td>
+                <td id="31"></td>
+                <td id="32"></td>
+                <td id="33"></td>
+                <td id="34"></td>
+                <td id="35"></td>
+            </tr>
+            <tr>
+                <td id="36"></td>
+                <td id="37"></td>
+                <td id="38"></td>
+                <td id="39"></td>
+                <td id="40"></td>
+                <td id="41"></td>
+                <td id="42"></td>
+            </tr>
+        </table>
+
+        <div>
+            <form method="post" action="/completeTask">
+                <h2>Click on a Task to Get Started</h2>
+                <input id="goalName" name="goalName">
+                <input id="TaskName" name="TaskName">
+                <button>Mark Task As Done</button>
+            </form>
+
+            <form method="post" action="/moveTask">
+                <h2>Click on a Task to Get Started</h2>
+                <input id="goalName2" name="goalName2">
+                <input id="TaskName2" name="TaskName2"> <br>
+                <label for="newDate">New Date: </label><input type="date" id="newDate" name="newDate">
+                <button>Update Date</button>
+            </form>
+        </div>
+    </div>
+</body>
+
+</html>
