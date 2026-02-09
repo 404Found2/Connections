@@ -12,7 +12,7 @@
    Within the server.js file, update the root and password to match the setting used to set up the local MySQL environment.<br>
    Note, there is no need to create any databases. The source code will take care of that!
 6. Download the Ollama LLama2 LLM Model, or any model of your choice (link: https://ollama.com/download/)<br>
-   Note that models like LLama3 require GPU access to be efficient/fast. When running on subsystems like WSL use the tinyllama model<br>
+   Note that models like LLama3 require GPU access to be efficient/fast. <br> When running on subsystems like WSL use the tinyllama model for faster speeds.<br>
 8. Setting Up SQL and LLM<br>
    In two different terminals open MySQL and OLLAMA:<br>
      ```
