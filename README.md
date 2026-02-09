@@ -1,10 +1,10 @@
 # Setting Up the Project Locally:
 1. Download the Source Code from this github repo.
-2. Ensure the following packages are downloaded:
-   npm install express
+2. Ensure the following packages are downloaded:<br>
+  ``` npm install express
    npm install mysql2
    npm install body-parser
-   npm install ollama
+   npm install ollama```
 4. Download MySql (link: https://dev.mysql.com/downloads/) <br>
    Within the server.js file, update the root and password to match the setting used to set up the local MySQL environment.<br>
    Note, there is no need to create any databases. The source code will take care of that!
