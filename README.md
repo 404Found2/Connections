@@ -1,6 +1,7 @@
 # Setting Up the Project Locally:
 1. Download the Source Code from this github repo.
-2. Ensure the following packages are downloaded:<br>
+2. Install Node.js, if not previously installed. (link: https://nodejs.org/en)
+3. Ensure the following packages are downloaded:<br>
 ```
    npm install express
    npm install mysql2
