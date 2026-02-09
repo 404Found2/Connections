@@ -1,7 +1,8 @@
 # Setting Up the Project Locally:
 1. Download the Source Code from this github repo.
 2. Ensure the following packages are downloaded:<br>
-```npm install express
+```
+   npm install express
    npm install mysql2
    npm install body-parser
    npm install ollama
@@ -13,7 +14,8 @@
    Note that models like LLama3 require GPU access to be efficient/fast. When running on subsystems like WSL use the tinyllama model<br>
 8. Setting Up SQL and LLM<br>
    In two different terminals open MySQL and OLLAMA:<br>
-     ```sudo mysql
+     ```
+     sudo mysql
      ollama run (name of model)
      ```
 9. Type 'npm start' in the command line to run the program on localhost:5000/
