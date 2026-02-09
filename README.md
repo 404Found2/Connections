@@ -18,12 +18,12 @@
      sudo mysql
      ollama run (name of model)
      ```
-9. Type 'npm start' in the command line to run the program on localhost:5000/
+9. Type `npm start` in the command line to run the program on localhost:5000/
 
 NOTE: The chosen Text To Speech API only supports transcription on the Chrome web browser.
 
 # Updates
-Last Updated: 2/9/2025
+Last Updated: 2/9/2026
 Summary:
   - Included set-up instructions
   - Updated npm packages to remove the depreciated mysql package and update with a more supported alternative (mysql2)
