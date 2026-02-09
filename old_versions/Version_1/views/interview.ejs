@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Connections</title>
+    <style>
+        :root {
+            --blue: #0077b5;
+            --light-blue: #00a0dc;
+            --grey: #595959;
+            --light-grey: #eeeeeeff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+            display: grid;
+            grid-template-areas: "nav main";
+            grid-template-columns: 250px 1fr;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        a {
+            color: var(--grey);
+            text-decoration: none;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        #nav {
+            grid-area: nav;
+            color: var(--grey);
+            font-size: 22px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--light-grey);
+            display: flex;
+            flex-direction: column;
+            padding-left: 5px;
+            padding-top: 25px;
+        }
+
+        #nav a:last-of-type {
+            justify-self: flex-end;
+        }
+
+        a:hover {
+            color: white;
+            background: var(--light-blue);
+        }
+
+        #body {
+            grid-area: main;
+            display: block;
+            width: 90%;
+            margin: auto;
+        }
+
+        #results {
+            margin: 10px auto;
+            border: 5px solid var(--blue);
+            height: 200px;
+            width: 500px;
+            overflow-x: hidden;
+            overflow-y: scroll;
+            border-radius: 10px;
+            font-size: 14px;
+        }
+
+        button {
+            padding: 12px 20px;
+            background: #0ea4da;
+            border: 0;
+            border-radius: 5px;
+            cursor: pointer;
+            color: #fff;
+            margin: 5px;
+        }
+
+        button:hover {
+            background-color: var(--blue);
+        }
+
+        video {
+            margin: auto !important;
+            border: 2px solid var(--light-blue);
+            width: 500px;
+        }
+
+        .flex {
+            display: flex;
+            justify-content: center;
+        }
+
+        input,
+        form,
+        #body div {
+            width: 500px;
+            margin: auto;
+            align-self: center;
+        }
+    </style>
+    <script type="application/javascript">
+
+        let chunks = [];
+        let recorder;
+        let audioBlob;
+
+        navigator.mediaDevices.getUserMedia({ audio: true, video: true })
+            .then(stream => {
+
+                recorder = new MediaRecorder(stream);
+                document.getElementById('stream').srcObject = stream;
+                document.getElementById('video').style.display = 'none';
+
+                recorder.ondataavailable = e => chunks.push(e.data);
+
+                recorder.onstop = () => {
+                    audioBlob = new Blob(chunks, { 'type': 'audio/ogg; codecs=opus' });
+                    document.getElementById('video').style.display = 'unset';
+                    document.getElementById('stream').style.display = 'none';
+                    document.getElementById('video').src = URL.createObjectURL(audioBlob);
+                    stream.getTracks().forEach(track => track.stop())
+                };
+
+            })
+            .catch(error => console.error('Error accessing media devices.', error));
+
+
+        var speechRecognizer = new webkitSpeechRecognition();
+        speechRecognizer.continuous = true;
+        speechRecognizer.interimResults = true;
+        speechRecognizer.lang = "en-US";
+        var finalTranscripts = "";
+
+        speechRecognizer.onresult = function (event) {
+            var interimTranscripts = "";
+            for (var i = event.resultIndex; i < event.results.length; i++) {
+                var transcript = event.results[i][0].transcript;
+                transcript.replace("\n", "<br>");
+                if (event.results[i].isFinal) {
+                    finalTranscripts += transcript;
+                }
+                else {
+                    interimTranscripts += transcript;
+                }
+                document.getElementById("results").innerHTML = finalTranscripts;
+            }
+        };
+        speechRecognizer.onerror = function (event) {
+        };
+
+        function started() {
+            recorder.start();
+            speechRecognizer.start();
+            chunks = [];
+            recorder;
+            audioBlob;
+        }
+
+        function stopped() {
+            recorder.stop();
+            speechRecognizer.stop();
+            finalTranscripts = "";
+        }
+
+        function question() {
+            var array = ["Tell me about yourself", "Tell me about yourself", "Why do you want to work at this company?", "Why do you want this job?", "Why should we hire you?", "What can you bring to the company?", "What are your strengths?", "What are your weaknesses?", "Tell me about a time you demonstrated leadership skills.", "What’s a time you disagreed with a decision that was made at work?", "What are you looking for in a new position?", "Where do you see yourself in five years?", "What makes you unique?"];
+            var index = Math.floor(Math.random() * array.length);
+
+            document.getElementById("question").value = array[index];
+
+        }
+    </script>
+</head>
+
+<body>
+    <div id="nav">
+        <a href="/home">Home</a>
+        <a href="/calendar">Calendar</a>
+        <a href="/goals">My Goals</a>
+        <a href="/interview" class="selected">Practice</a>
+        <a href="/">Logout</a>
+    </div>
+    <div id="body">
+
+        <div>
+            <video id="stream" autoplay></video>
+            <video id="video" controls autoplay></video>
+        </div>
+
+        <div class="flex">
+            <button id="start" onclick="started()">Start Recording</button>
+            <button id="stop" onclick="stopped()">Stop Recording</button>
+            <button id="newPrompt" onclick="question()">New Prompt</button>
+            <button id="ai_analyzer" form="aiAnalysis">AI Analysis</button>
+        </div>
+        <form id="aiAnalysis" method="post" action="/analyze">
+            <input id="question" name="question">
+            <textarea id="results" name="results" value="<%- sample -%>"><%- sample -%></textarea>
+        </form>
+
+    </div>
+
+</body>
+
+</html>

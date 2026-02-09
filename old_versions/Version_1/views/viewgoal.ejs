@@ -1,0 +1,193 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connections</title>
+</head>
+
+
+
+<script src="https://kit.fontawesome.com/8dc5063b50.js" crossorigin="anonymous"></script>
+
+
+<style>
+    :root {
+        --blue: #0077b5;
+        --light-blue: #00a0dc;
+        --grey: #595959;
+        --light-grey: #eeeeeeff;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+    body {
+        overflow-x: hidden;
+        margin: 0px;
+        padding: 0px;
+        display: grid;
+        grid-template-areas: "nav main";
+        grid-template-columns: 250px 3fr;
+        width: 100vw;
+        height: 100vh;
+    }
+
+    a {
+        color: var(--grey);
+        text-decoration: none;
+        margin: 10px;
+        padding: 10px;
+        border-radius: 10px;
+    }
+
+    #nav {
+        grid-area: nav;
+        color: var(--grey);
+        font-size: 22px;
+        font-family: Arial, Helvetica, sans-serif;
+        background: var(--light-grey);
+        display: flex;
+        flex-direction: column;
+        padding-left: 5px;
+        padding-top: 25px;
+    }
+
+    #nav a:last-of-type {
+        justify-self: flex-end;
+    }
+
+    a:hover,
+    button:hover {
+        color: white;
+        background: var(--light-blue);
+    }
+
+    button,
+    #subnav a {
+        background: var(--blue);
+        color: white;
+        text-decoration: none;
+        margin: 0px;
+        padding: 8px;
+        border-radius: 10px;
+        border: 0px;
+    }
+
+    #body {
+        grid-area: main;
+        margin: auto;
+    }
+
+    #flexbox {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 15px;
+        padding: 15px;
+        align-items: center;
+        justify-content: center;
+    }
+
+    .goal {
+        background: var(--light-grey);
+        padding: 20px;
+        border-radius: 20px;
+        width: 80%;
+        height: auto;
+        margin: auto;
+
+    }
+
+
+    #new {
+        float: right;
+        margin-right: 30px;
+        margin-bottom: 15px;
+    }
+
+    #title {
+        text-align: center;
+        color: var(--light-blue)
+    }
+
+    #AddNew {
+        margin: 15px;
+        background: white;
+        padding: 10px;
+        border-radius: 15px;
+    }
+
+    #AddNew h1 {
+        margin-top: 0px;
+        margin-bottom: 8px;
+        font-size: 24px;
+    }
+
+    #AddNew button {
+        padding: 5px;
+        border-radius: 5px;
+        margin-top: 5px;
+    }
+
+    #subnav {
+        margin: 15px auto;
+        width: 80%;
+        display: flex;
+        align-items: end;
+        justify-content: center;
+    }
+
+    #subnav a {
+        padding: 10px;
+        width: 100%;
+    }
+</style>
+
+<body>
+    <div id="nav">
+        <a href="/home">Home</a>
+        <a href="/calendar">Calendar</a>
+        <a href="/goals" class="selected">My Goals</a>
+        <a href="/interview">Practice</a>
+        <a href="/">Logout</a>
+    </div>
+    <div id="body">
+        <h1 id="title">My Goals</h1>
+        <div class="goal">
+            <h1><%- goal -%></h1>
+            <p><%- summary -%></p>
+
+            <form id="steps"> <%- lists -%>
+
+            </form>
+
+            <div>
+                <form id="AddNew" id="newTask" method="POST" action="/newTask">
+                    <h1>Add New Step</h1>
+
+                    <label for="newgoalName">Goal Name:</label>
+                    <input id="newgoalName" name="newgoalName" value='<%- goal -%>' readonly>
+
+                    <br>
+
+                    <label for="newStepName">Name of Task:</label>
+                    <input id="newStepName" name="newStepName">
+
+                    <br>
+
+                    <label for="newStepDate">Due Date:</label>
+                    <input id="newStepDate" type="Date" name="newStepDate">
+
+                    <br>
+
+                    <button type="submit"> Create Task </button>
+                </form>
+            </div>
+        </div>
+        <div id="subnav">
+            <a href="/goals"> Go Back</button>
+
+        </div>
+    </div>
+</body>
+
+</html>

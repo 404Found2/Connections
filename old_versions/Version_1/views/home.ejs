@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Connections</title>
+
+    <style>
+        :root {
+            --blue: #0077b5;
+            --light-blue: #00a0dc;
+            --grey: #595959;
+            --light-grey: #eeeeeeff;
+            font-family: Arial, Helvetica, sans-serif;
+        }
+
+        body {
+            margin: 0px;
+            padding: 0px;
+            display: grid;
+            grid-template-areas: "nav main";
+            grid-template-columns: 250px 3fr;
+            width: 100vw;
+            height: 100vh;
+        }
+
+        a {
+            color: var(--grey);
+            text-decoration: none;
+            margin: 10px;
+            padding: 10px;
+            border-radius: 10px;
+        }
+
+        #nav {
+            grid-area: nav;
+            color: var(--grey);
+            font-size: 22px;
+            font-family: Arial, Helvetica, sans-serif;
+            background: var(--light-grey);
+            display: flex;
+            flex-direction: column;
+            padding-left: 5px;
+            padding-top: 25px;
+        }
+
+        #nav a:last-of-type {
+            justify-self: flex-end;
+        }
+
+        a:hover,
+        a:hover {
+            color: white;
+            background: var(--light-blue);
+        }
+
+        #body {
+            grid-area: main;
+            margin: auto;
+        }
+
+        .grey {
+            background: var(--light-grey);
+            padding: 20px;
+            border-radius: 20px;
+            width: 200px;
+            height: 150px;
+
+        }
+
+        .grey h1 {
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin: 0px;
+            padding: 0px;
+            height: 35px;
+        }
+
+        .grey p {
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            line-height: 16px;
+            height: 55px;
+            -webkit-line-clamp: 3;
+            -webkit-box-orient: vertical;
+        }
+
+        .grid {
+            width: 500px;
+            display: grid;
+            grid-template-areas: "a b"
+                "c b";
+            grid-gap: 5px;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+        }
+
+        #goals {
+            grid-area: a;
+            width: 250px;
+            height: 200px;
+            box-sizing: border-box;
+        }
+
+        #settings {
+            grid-area: c;
+            width: 250px;
+            height: 185px;
+            margin-top: 15px;
+            box-sizing: border-box;
+        }
+
+        #notes {
+            grid-area: b;
+            width: 250px;
+            height: 405px;
+            margin-left: 15px;
+            box-sizing: border-box;
+        }
+
+        #show {
+            border: 2px solid var(--light-blue);
+            color: var(--light-blue);
+            border-radius: 5px;
+        }
+
+        #show:active {
+            border: 2px solid var(--blue);
+            color: var(--blue);
+        }
+
+        #notes textarea {
+            width: 175px;
+            height: 250px;
+        }
+
+        #notes button {
+            color: white;
+            background-color: var(--light-blue);
+            border: 0px;
+            padding: 5px;
+            border-radius: 5px;
+            width: 100%;
+        }
+
+        #notes button:hover {
+            background-color: var(--blue);
+        }
+    </style>
+
+    <script>
+        var password = document.getElementById("areaHidden").innerText;
+        var hidden = false;
+        var value = "";
+
+        function change() {
+            value = "";
+            if (hidden) {
+                hidden = false;
+                value = password;
+
+            } else {
+                password = document.getElementById("areaHidden").innerText;
+                hidden = true;
+                value = "";
+                for (i = 0; i < password.length; i++) {
+                    value += "•";
+                }
+            }
+
+            document.getElementById("areaHidden").innerText = value;
+        }
+    </script>
+
+    <script src="https://kit.fontawesome.com/8dc5063b50.js" crossorigin="anonymous"></script>
+</head>
+
+<body onload="change();">
+    <div id="nav">
+        <a href="/home">Home</a>
+        <a href="/calendar">Calendar</a>
+        <a href="/goals">My Goals</a>
+        <a class="selected" href="/interview">Practice</a>
+        <a href="/">Logout</a>
+    </div>
+    <div id="body">
+        <h1>Dashboard</h1>
+        <div class="grid">
+            <form id="notes" method="POST" action="/notes" class="grey">
+                <h2>Notes</h2>
+                <textarea id="notes" name="notes" value="<%- Notes -%>"><%- Notes -%></textarea>
+                <button type="submit">Save Notes</button>
+            </form>
+
+            <div id="settings" class="grey">
+                <h2>My Info</h2>
+
+                <p> Username: <%- username %><br>
+                        Password: <span id="areaHidden"><%- password %></span>
+                        <button id="show" onclick="change();">Show</button> <br>
+                        Email: <%- email %>
+                </p>
+            </div>
+
+            <div id="goals" class="grey">
+                <h2>Goals</h2>
+                <ul>
+                    <%- List %>
+                </ul>
+            </div>
+
+        </div>
+    </div>
+</body>
+
+</html>

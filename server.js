@@ -1,7 +1,10 @@
 const express = require("express");
-const mysql = require("mysql");
+const mysql = require("mysql2");
 const bodyParser = require('body-parser');
 
+//MySQL settings
+var mysql_root = 'root';
+var mysql_pwd = 'root';
 
 var username;
 var email;
@@ -17,6 +20,73 @@ app.set('view engine', 'ejs');
 app.use(express.static("./views"));
 app.use(bodyParser.urlencoded({ extended: true }));
 
+/* SETUP ONLY RUNS ONCE */
+var dbcon = mysql.createConnection({
+    host: 'localhost',
+    user: mysql_root,
+    password: mysql_pwd,
+  });
+
+  var dbsql = `CREATE DATABASE IF NOT EXISTS connections;`;
+  dbcon.connect(function (err) {
+    if (err) throw err;
+    dbcon.query(dbsql, function (err, result) {
+      if (err) throw err;
+    });
+
+    dbcon.end();
+
+});
+
+var tb1con = mysql.createConnection({
+    host: 'localhost',
+    user: mysql_root,
+    password: mysql_pwd,
+    database: 'connections'
+  });
+
+  var tb1sql = `CREATE TABLE IF NOT EXISTS users (
+    Username VARCHAR(50),
+    Password VARCHAR(255), 
+    Email VARCHAR(100),
+    Notes TEXT);`;
+
+  tb1con.connect(function (err) {
+    if (err) throw err;
+    tb1con.query(tb1sql, function (err, result) {
+      if (err) throw err;
+    });
+
+  tb1con.end();
+
+});
+
+var tb2con = mysql.createConnection({
+    host: 'localhost',
+    user: mysql_root,
+    password: mysql_pwd,
+    database: 'connections'
+  });
+
+  var tb2sql = `CREATE TABLE IF NOT EXISTS goals (
+    Goal VARCHAR(100),
+    Username VARCHAR(50),
+    Description TEXT,
+    Completion  DATE,
+    Steps TEXT);`;
+    
+  tb2con.connect(function (err) {
+    if (err) throw err;
+    tb2con.query(tb2sql, function (err, result) {
+      if (err) throw err;
+    });
+
+  tb2con.end();
+
+});
+
+/*end of MYSQL Setup*/
+
 app.get("/", (req, res) => {
   res.render("index", { errormsg: "" })
 });
@@ -25,8 +95,8 @@ app.post("/login", (req, res) => {
 
   var con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -52,8 +122,8 @@ app.post("/login", (req, res) => {
 
         var conn = mysql.createConnection({
           host: 'localhost',
-          user: 'root',
-          password: '',
+          user: mysql_root,
+          password: mysql_pwd,
           database: 'connections'
         });
 
@@ -92,8 +162,8 @@ app.post("/login", (req, res) => {
 app.post("/notes", (req, res) => {
   var con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -117,8 +187,8 @@ app.post("/notes", (req, res) => {
 app.get("/home", (req, res) => {
   var conn = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -148,8 +218,8 @@ app.post("/signup", (req, res) => {
 
     var connect = mysql.createConnection({
       host: 'localhost',
-      user: 'root',
-      password: '',
+      user: mysql_root,
+      password: mysql_pwd,
       database: 'connections'
     });
 
@@ -168,8 +238,8 @@ app.post("/signup", (req, res) => {
         } else {
           var con = mysql.createConnection({
             host: 'localhost',
-            user: 'root',
-            password: '',
+            user: mysql_root,
+            password: mysql_pwd,
             database: 'connections'
           });
 
@@ -204,8 +274,8 @@ app.get("/signup", (req, res) => {
 app.get("/goals", (req, res) => {
   var con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -245,8 +315,8 @@ app.post("/viewgoals", (req, res) => {
 
   var con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -290,8 +360,8 @@ app.post("/viewgoals", (req, res) => {
 app.post("/newGoal", (req, res) => {
   var con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -306,8 +376,8 @@ app.post("/newGoal", (req, res) => {
 
       var conn = mysql.createConnection({
         host: 'localhost',
-        user: 'root',
-        password: '',
+        user: mysql_root,
+        password: mysql_pwd,
         database: 'connections'
       });
 
@@ -351,8 +421,8 @@ app.post("/newTask", (req, res) => {
 
   var connect = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -373,8 +443,8 @@ app.post("/newTask", (req, res) => {
 
       var conn = mysql.createConnection({
         host: 'localhost',
-        user: 'root',
-        password: '',
+        user: mysql_root,
+        password: mysql_pwd,
         database: 'connections'
       });
 
@@ -410,8 +480,8 @@ app.post("/newTask", (req, res) => {
 app.get("/calendar", (req, res) => {
   var con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -442,8 +512,8 @@ app.get("/calendar", (req, res) => {
 app.post("/completeTask", (req, res) => {
   var con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -466,8 +536,8 @@ app.post("/completeTask", (req, res) => {
       }
       var conn = mysql.createConnection({
         host: 'localhost',
-        user: 'root',
-        password: '',
+        user: mysql_root,
+        password: mysql_pwd,
         database: 'connections'
       });
 
@@ -494,8 +564,8 @@ app.post("/completeTask", (req, res) => {
 app.post("/moveTask", (req, res) => {
   var con = mysql.createConnection({
     host: 'localhost',
-    user: 'root',
-    password: '',
+    user: mysql_root,
+    password: mysql_pwd,
     database: 'connections'
   });
 
@@ -518,8 +588,8 @@ app.post("/moveTask", (req, res) => {
       }
       var conn = mysql.createConnection({
         host: 'localhost',
-        user: 'root',
-        password: '',
+        user: mysql_root,
+        password: mysql_pwd,
         database: 'connections'
       });
 
@@ -554,9 +624,9 @@ app.post("/analyze", (req, res) => {
   var modelResponse = ""
 
   let chatConfig = {
-    model: "llama2",
+    model: "tinyllama",
     role: "user",
-    content: "Provide suggestions to improve this job interview response to the question: " + req.body.question + "Given the response: " + req.body.results
+    content: "Provide suggestions to improve this job interview response to the question: " + req.body.question + " Given the response: " + req.body.results
   }
 
   async function invokeLLM(props) {
@@ -569,6 +639,7 @@ app.post("/analyze", (req, res) => {
         model: props.model,
         messages: [{ role: props.role, content: props.content }],
       })
+      console.log(`${response.message.content}\n`);
       res.render("interview", { sample: `${response.message.content}\n` });
     }
     catch (error) {
