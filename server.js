@@ -626,7 +626,7 @@ app.post("/analyze", (req, res) => {
   let chatConfig = {
     model: "tinyllama",
     role: "user",
-    content: "Provide suggestions to improve this job interview response to the question: " + req.body.question + " Given the response: " + req.body.results
+    content: "You are an interviewee that was asked " + req.body.question + " and gave the response` " + req.body.results + "`. Explain with actionable steps this candidate can do to better answer the question again by referencing thier current response to identify weaknesses and strengths in thier answer and provide a sample answer this these improvements in mind."
   }
 
   async function invokeLLM(props) {
@@ -654,5 +654,6 @@ app.post("/analyze", (req, res) => {
 app.listen(5000, () => {
   console.log("Server started on Port 5000");
 })
+
 
 
