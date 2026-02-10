@@ -36,8 +36,8 @@ This is a simple ejs and node app that allows users to plan tasks and preactice 
 - Web Speech API, a Chrome supported front-end for speech recognition and speech synthesis (also known as text to speech, or TTS)
 
 ## Updates
-Last Updated: 2/9/2026
-Summary:
+Last Updated: 2/9/2026 <br>
+Summary of Updates:
   - Included set-up instructions
   - Updated npm packages to remove the depreciated mysql package and update with a more supported alternative (mysql2)
   - Included set-up SQL commands to make DB and Table setup easier for users wishing to download source code
