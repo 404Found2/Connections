@@ -1,4 +1,5 @@
-# Setting Up the Project Locally:
+# Connections
+## Setting Up the Project Locally:
 1. Download the Source Code from this github repo.
 2. Install Node.js, if not previously installed. (link: https://nodejs.org/en)
 3. Ensure the following packages are downloaded:<br>
@@ -23,7 +24,18 @@
 
 NOTE: The chosen Text To Speech API only supports transcription on the Chrome web browser.
 
-# Updates
+## Inspiration and What It Does 
+This web application acts as a personal career coach by using Ollama's AI to provide instant, actionable feedback on your interview performance and speaking habits. It creates a system that allows you to be in control of your career by helping you set SMART goals and track your progress.
+
+## How I Built It
+This is a simple ejs and node app that allows users to plan tasks and preactice for interviews. The main language used to develop this app was Javascript as well as CSS for styling.
+
+## Technologies Used
+- MySQL for user data management and operating login systems
+- Ollama Model (tinyllama) for interview practice feedback
+- Web Speech API, a Chrome supported front-end for speech recognition and speech synthesis (also known as text to speech, or TTS)
+
+## Updates
 Last Updated: 2/9/2026
 Summary:
   - Included set-up instructions
