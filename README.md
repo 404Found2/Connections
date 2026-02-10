@@ -41,3 +41,4 @@ Summary of Updates:
   - Included set-up instructions
   - Updated npm packages to remove the depreciated mysql package and update with a more supported alternative (mysql2)
   - Included set-up SQL commands to make DB and Table setup easier for users wishing to download source code
+  - Optimized LLM outputs via improved prompt engineering (given while also balancing the physical limitations of the tinyllama model)
