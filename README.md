@@ -1,5 +1,5 @@
 # Connections
-> Note: This project does not use ANY AI. This was meant to be a high school hackathon submission where I practice HTML & CSS skills and to understand server-side page rendering using node.js and mySQL databases.
+> Note: This project does not use ANY AI generated code. This was meant to be a high school hackathon submission where I practice HTML & CSS skills and to understand server-side page rendering using node.js and mySQL databases.
 
 ## Inspiration and What It Does 
 This web application acts as a personal career coach by using Ollama's AI to provide instant, actionable feedback on your interview performance and speaking habits. It creates a system that allows you to be in control of your career by helping you set SMART goals and track your progress.
